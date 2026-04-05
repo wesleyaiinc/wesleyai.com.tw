@@ -1,0 +1,67 @@
+baseURL: "https://www.wesleyai.com.tw/"
+defaultContentLanguage: "zh"
+defaultContentLanguageInSubdir: false
+
+languages:
+  zh:
+    languageName: "中文"
+    weight: 1
+    title: "Wesley AI Inc."
+    params:
+      homeInfoParams:
+        Title: "Wesley AI Inc."
+        Content: "協助台灣製造業導航歐盟法規合規，專注於能源自動化 AI 解決方案、網路韌性法規（CRA）與工業元件整合。"
+  en:
+    languageName: "English"
+    weight: 2
+    title: "Wesley AI Inc."
+    params:
+      homeInfoParams:
+        Title: "Wesley AI Inc."
+        Content: "Helping Taiwan manufacturers navigate EU compliance — AI solutions for energy & automation, Cyber Resilience Act, and industrial component integration."
+
+theme: "PaperMod"
+
+params:
+  socialIcons:
+    - name: linkedin
+      url: "https://www.linkedin.com/in/wesleylin-tw"
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+
+menu:
+  main:
+    - name: "關於"
+      url: "/about/"
+      weight: 1
+      params:
+        locale: zh
+    - name: "服務"
+      url: "/services/"
+      weight: 2
+      params:
+        locale: zh
+    - name: "文章"
+      url: "/posts/"
+      weight: 3
+      params:
+        locale: zh
+    - name: "聯絡"
+      url: "/contact/"
+      weight: 4
+      params:
+        locale: zh
+  en:
+    - name: "About"
+      url: "/en/about/"
+      weight: 1
+    - name: "Services"
+      url: "/en/services/"
+      weight: 2
+    - name: "Articles"
+      url: "/en/posts/"
+      weight: 3
+    - name: "Contact"
+      url: "/en/contact/"
+      weight: 4
