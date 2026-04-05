@@ -5,8 +5,8 @@ const members: TeamMember[] = [
   {
     name: 'Wesley Lin (林靖為)',
     role: 'Founder & Principal Consultant',
-    bio: 'Business development professional with deep roots in Taiwan\'s electronics and automation industry. Former roles at Lionic (embedded cybersecurity/DPI) and Delta Electronics (power electronics, energy management, factory automation). Focused on bridging Taiwan manufacturers with EU compliance requirements — especially the Cyber Resilience Act.',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&auto=format&fit=crop'
+    bio: "Business development professional with deep roots in Taiwan's energy and industrial automation ecosystem, with experience at Delta Electronics (AIoT, energy management, factory automation), ABB, and Schneider Electric. Focused on embedding AI into energy and automation systems — from edge intelligence to operational optimization — while bridging Taiwan manufacturers with EU regulatory frameworks, particularly the Cyber Resilience Act, enabling their transition into secure, intelligent, and globally compliant solution providers.",
+    avatar: '/wesley.jpg'
   }
 ];
 
