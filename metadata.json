@@ -1,0 +1,6 @@
+
+{
+  "name": "WESLEY AI Inc - Future of Intelligence",
+  "description": "A high-end, professional corporate landing page for WESLEY AI Inc, featuring interactive AI demos powered by Gemini, clean enterprise design, and comprehensive service overviews.",
+  "requestFramePermissions": ["camera", "microphone"]
+}
