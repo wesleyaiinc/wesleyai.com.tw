@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CRA Gap Assessment — Wesley AI Inc.</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --green: #1D9E75;
+    --green-dark: #0F6E56;
+    --green-light: #E1F5EE;
+    --green-mid: #9FE1CB;
+    --amber: #EF9F27;
+    --amber-light: #FAEEDA;
+    --red: #E24B4A;
+    --red-light: #FCEBEB;
+    --gray-100: #f7f7f5;
+    --gray-200: #eeede9;
+    --gray-400: #b4b2a9;
+    --gray-600: #5f5e5a;
+    --gray-800: #2c2c2a;
+    --text: #1a1a18;
+    --radius: 10px;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--gray-100);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* LAYOUT */
+  .page { max-width: 700px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+
+  /* BRAND HEADER */
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+  .brand-mark {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--green); display: flex; align-items: center; justify-content: center;
+  }
+  .brand-mark svg { width: 18px; height: 18px; fill: #fff; }
+  .brand-name { font-size: 14px; font-weight: 500; color: var(--gray-600); letter-spacing: 0.02em; }
+
+  /* PROGRESS */
+  .progress { display: flex; gap: 5px; margin-bottom: 2.25rem; }
+  .prog-seg {
+    height: 2px; flex: 1; border-radius: 2px;
+    background: var(--gray-200); transition: background 0.3s;
+  }
+  .prog-seg.done { background: var(--green); }
+  .prog-seg.active { background: var(--green-mid); }
+
+  /* STEP */
+  .step { display: none; animation: fadeUp 0.2s ease; }
+  .step.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .step-tag { font-family: var(--mono); font-size: 11px; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .step-title { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+  .step-sub { font-size: 14px; color: var(--gray-600); margin-bottom: 2rem; line-height: 1.65; max-width: 560px; }
+
+  /* FORM ELEMENTS */
+  .q-block { margin-bottom: 1.5rem; }
+  .q-label { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .q-hint { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; line-height: 1.5; }
+
+  input[type="text"], input[type="email"], select {
+    width: 100%; padding: 10px 14px;
+    font-family: var(--sans); font-size: 14px;
+    border: 1px solid var(--gray-200); border-radius: var(--radius);
+    background: #fff; color: var(--text);
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--green); }
+  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235f5e5a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* RADIO OPTIONS */
+  .radio-group { display: flex; flex-direction: column; gap: 6px; }
+  .radio-opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border: 1px solid var(--gray-200);
+    border-radius: var(--radius); cursor: pointer;
+    font-size: 14px; color: var(--text);
+    background: #fff; transition: all 0.12s;
+    user-select: none;
+  }
+  .radio-opt:hover { border-color: var(--green-mid); background: var(--green-light); }
+  .radio-opt.selected { border-color: var(--green); background: var(--green-light); color: #085041; }
+  .radio-dot {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 1.5px solid var(--gray-400); flex-shrink: 0;
+    transition: all 0.12s;
+  }
+  .radio-opt.selected .radio-dot { background: var(--green); border-color: var(--green); }
+
+  /* BUTTONS */
+  .nav-row { display: flex; gap: 10px; margin-top: 2rem; align-items: center; }
+  .btn-primary {
+    padding: 10px 24px; font-family: var(--sans); font-size: 14px; font-weight: 500;
+    border-radius: var(--radius); border: none;
+    background: var(--green); color: #fff; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-primary:disabled { background: var(--gray-400); cursor: not-allowed; }
+  .btn-secondary {
+    padding: 10px 20px; font-family: var(--sans); font-size: 14px;
+    border-radius: var(--radius); border: 1px solid var(--gray-200);
+    background: #fff; color: var(--gray-600); cursor: pointer;
+    transition: all 0.12s;
+  }
+  .btn-secondary:hover { border-color: var(--gray-400); color: var(--text); }
+  .btn-outline-green {
+    padding: 10px 20px; font-family: var(--sans); font-size: 14px; font-weight: 500;
+    border-radius: var(--radius); border: 1.5px solid var(--green);
+    background: #fff; color: var(--green); cursor: pointer;
+    transition: all 0.12s;
+  }
+  .btn-outline-green:hover { background: var(--green-light); }
+
+  /* EMAIL CAPTURE */
+  .email-card {
+    background: #fff; border: 1px solid var(--gray-200);
+    border-radius: 14px; padding: 1.75rem 1.5rem; margin-bottom: 1.5rem;
+  }
+  .privacy-note { font-size: 12px; color: var(--gray-600); margin-top: 12px; line-height: 1.6; }
+  .privacy-note a { color: var(--green); text-decoration: none; }
+
+  /* SENDING STATE */
+  .sending-msg { font-size: 13px; color: var(--gray-600); margin-left: 4px; display: none; }
+
+  /* REPORT */
+  #report { display: none; }
+  #report.active { display: block; }
+
+  .r-brand {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 1.75rem; padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .r-brand-left {}
+  .r-tag { font-family: var(--mono); font-size: 11px; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .r-company { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+  .r-meta { font-size: 13px; color: var(--gray-600); }
+  .r-contact { text-align: right; font-size: 13px; color: var(--gray-600); line-height: 1.7; }
+  .r-contact a { color: var(--green); text-decoration: none; }
+
+  .score-band {
+    display: flex; align-items: center; gap: 20px;
+    padding: 1.25rem 1.5rem; border-radius: 14px; margin-bottom: 1.75rem;
+  }
+  .score-band.critical { background: var(--red-light); border: 1px solid #f7c1c1; }
+  .score-band.partial { background: var(--amber-light); border: 1px solid #fac775; }
+  .score-band.aligned { background: var(--green-light); border: 1px solid var(--green-mid); }
+  .score-num { font-size: 40px; font-weight: 300; line-height: 1; }
+  .score-band.critical .score-num { color: #a32d2d; }
+  .score-band.partial .score-num { color: #854f0b; }
+  .score-band.aligned .score-num { color: #0f6e56; }
+  .score-info-title { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+  .score-band.critical .score-info-title { color: #791f1f; }
+  .score-band.partial .score-info-title { color: #633806; }
+  .score-band.aligned .score-info-title { color: #085041; }
+  .score-info-sub { font-size: 13px; }
+  .score-band.critical .score-info-sub { color: #a32d2d; }
+  .score-band.partial .score-info-sub { color: #854f0b; }
+  .score-band.aligned .score-info-sub { color: #0f6e56; }
+
+  .section-head {
+    font-family: var(--mono); font-size: 11px; color: var(--gray-600);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin: 1.75rem 0 0.85rem;
+  }
+
+  .gap-card {
+    border: 1px solid var(--gray-200); border-radius: 12px;
+    margin-bottom: 10px; overflow: hidden; background: #fff;
+  }
+  .gap-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 16px; background: var(--gray-100);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .sev-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .sev-dot.critical { background: var(--red); }
+  .sev-dot.major { background: var(--amber); }
+  .sev-dot.minor { background: var(--green); }
+  .gap-name { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+  .sev-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    padding: 2px 8px; border-radius: 8px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .sev-badge.critical { background: var(--red-light); color: #a32d2d; }
+  .sev-badge.major { background: var(--amber-light); color: #854f0b; }
+  .sev-badge.minor { background: var(--green-light); color: #085041; }
+  .gap-body { padding: 13px 16px; }
+  .gap-desc { font-size: 13px; color: var(--gray-600); margin-bottom: 9px; line-height: 1.65; }
+  .gap-action { font-size: 13px; color: var(--text); margin-bottom: 7px; line-height: 1.6; }
+  .gap-action strong { font-weight: 500; }
+  .gap-ref { font-family: var(--mono); font-size: 11px; color: var(--gray-400); }
+
+  .road-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 11px 14px; border-radius: 10px;
+    background: var(--gray-100); margin-bottom: 8px;
+  }
+  .road-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--green); color: #fff;
+    font-size: 11px; font-weight: 500; font-family: var(--mono);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .road-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .road-text strong { font-weight: 500; }
+
+  .cta-card {
+    margin-top: 2rem; padding: 1.25rem 1.5rem;
+    border: 1px solid var(--green-mid); border-radius: 14px;
+    background: var(--green-light);
+  }
+  .cta-card p { font-size: 13px; color: #085041; line-height: 1.65; margin-bottom: 1rem; }
+  .cta-email { font-weight: 500; }
+
+  .report-actions { display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 3.5rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .footer-brand { font-size: 13px; color: var(--gray-600); }
+  .footer-brand strong { color: var(--text); font-weight: 500; }
+  .footer-note { font-size: 12px; color: var(--gray-400); text-align: right; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- BRAND -->
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 18 18"><path d="M9 1L2 5v8l7 4 7-4V5L9 1zm0 2.2l5 2.85v5.9L9 14.8l-5-2.85V6.05L9 3.2z"/></svg>
+    </div>
+    <div class="brand-name">Wesley AI Inc.</div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress" id="prog"></div>
+
+  <!-- MAIN FORM -->
+  <div id="main-form">
+
+    <!-- STEP 0: INTAKE -->
+    <div class="step active" id="s0">
+      <div class="step-tag">EU Cyber Resilience Act</div>
+      <div class="step-title">Product compliance self-assessment</div>
+      <div class="step-sub">This assessment helps manufacturers of connected industrial products understand their CRA compliance posture and identify priority gaps before the enforcement deadline.</div>
+      <div class="q-block two-col">
+        <div>
+          <div class="q-label">Company name</div>
+          <input type="text" id="co-name" placeholder="ABC Automation Co., Ltd." />
+        </div>
+        <div>
+          <div class="q-label">Primary product category</div>
+          <select id="prod-cat">
+            <option value="">Select...</option>
+            <option value="plc">PLC / PAC</option>
+            <option value="hmi">HMI panel</option>
+            <option value="vfd">VFD / servo drive</option>
+            <option value="gateway">Industrial gateway / edge device</option>
+          </select>
+        </div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Does your product connect to external networks (Ethernet, Wi-Fi, cellular, OPC-UA, MQTT)?</div>
+        <div class="radio-group" id="rg-conn"></div>
+      </div>
+      <div class="nav-row"><button class="btn-primary" onclick="goStep(1)">Begin assessment →</button></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step" id="s1">
+      <div class="step-tag">Section 1 of 4</div>
+      <div class="step-title">Security by design</div>
+      <div class="step-sub">CRA Article 13 requires security to be considered throughout the product development lifecycle — not added after the fact.</div>
+      <div class="q-block">
+        <div class="q-label">Does your product development process include a documented threat model or security risk assessment?</div>
+        <div class="radio-group" id="rg-s1q1"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Are security requirements formally tracked during product design (e.g. in requirements documents or a security specification)?</div>
+        <div class="radio-group" id="rg-s1q2"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Is secure coding guidance (e.g. input validation, memory safety) applied and reviewed during development?</div>
+        <div class="radio-group" id="rg-s1q3"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goStep(0)">← Back</button>
+        <button class="btn-primary" onclick="goStep(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="s2">
+      <div class="step-tag">Section 2 of 4</div>
+      <div class="step-title">Vulnerability & patch management</div>
+      <div class="step-sub">CRA Annex I requires manufacturers to handle vulnerabilities for the supported lifetime of the product and provide timely security updates.</div>
+      <div class="q-block">
+        <div class="q-label">Does your company have a process for receiving and triaging vulnerability reports from third parties?</div>
+        <div class="radio-group" id="rg-s2q1"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Can your product receive security firmware/software updates over the network (OTA or remote push)?</div>
+        <div class="radio-group" id="rg-s2q2"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Do you maintain a Software Bill of Materials (SBOM) listing third-party components and libraries in your product?</div>
+        <div class="radio-group" id="rg-s2q3"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goStep(1)">← Back</button>
+        <button class="btn-primary" onclick="goStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="s3">
+      <div class="step-tag">Section 3 of 4</div>
+      <div class="step-title">Network security & access control</div>
+      <div class="step-sub">CRA Annex I requires products to protect confidentiality and integrity of data, limit attack surface, and enforce least-privilege access.</div>
+      <div class="q-block">
+        <div class="q-label">Does your product enforce authentication before allowing remote access or configuration changes?</div>
+        <div class="radio-group" id="rg-s3q1"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Is network traffic to/from the product encrypted in transit (e.g. TLS, DTLS, encrypted OPC-UA)?</div>
+        <div class="radio-group" id="rg-s3q2"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Does your product have the ability to detect and log anomalous network behavior or unauthorized access attempts?</div>
+        <div class="q-hint">This may be built into the device firmware, or handled by an embedded network monitoring component.</div>
+        <div class="radio-group" id="rg-s3q3"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goStep(2)">← Back</button>
+        <button class="btn-primary" onclick="goStep(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="s4">
+      <div class="step-tag">Section 4 of 4</div>
+      <div class="step-title">Documentation & conformity</div>
+      <div class="step-sub">CRA requires manufacturers to maintain technical documentation and provide end-users with security information, including for CE marking conformity.</div>
+      <div class="q-block">
+        <div class="q-label">Does your product have technical documentation describing its security architecture, interfaces, and configuration options?</div>
+        <div class="radio-group" id="rg-s4q1"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Do product manuals or data sheets inform end-users how to configure the product securely?</div>
+        <div class="radio-group" id="rg-s4q2"></div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">Has your company engaged a conformity assessment body (e.g. TÜV, BSI, SGS) for CRA or any related cybersecurity certification?</div>
+        <div class="radio-group" id="rg-s4q3"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goStep(3)">← Back</button>
+        <button class="btn-primary" onclick="goStep(5)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: EMAIL CAPTURE -->
+    <div class="step" id="s5">
+      <div class="step-tag">Almost done</div>
+      <div class="step-title">Receive your report</div>
+      <div class="step-sub">Enter your contact details to generate your personalised CRA gap assessment report. Wesley AI will follow up with implementation guidance.</div>
+
+      <div class="email-card">
+        <div class="q-block two-col">
+          <div>
+            <div class="q-label">Your name</div>
+            <input type="text" id="contact-name" placeholder="Jane Chen" />
+          </div>
+          <div>
+            <div class="q-label">Job title</div>
+            <input type="text" id="contact-title" placeholder="Product Manager" />
+          </div>
+        </div>
+        <div class="q-block">
+          <div class="q-label">Work email</div>
+          <input type="email" id="contact-email" placeholder="you@company.com" />
+        </div>
+        <div class="privacy-note">Your contact details will be shared only with <a href="mailto:wesley@wesleyai.com.tw">Wesley AI Inc.</a> for follow-up on your assessment. We do not share your data with third parties.</div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goStep(4)">← Back</button>
+        <button class="btn-primary" id="gen-btn" onclick="submitAndGenerate()">Generate report →</button>
+        <span class="sending-msg" id="sending-msg">Sending...</span>
+      </div>
+    </div>
+
+  </div><!-- /main-form -->
+
+  <!-- REPORT -->
+  <div id="report"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand"><strong>Wesley AI Inc.</strong> — Industrial Cybersecurity Advisory</div>
+    <div class="footer-note">wesley@wesleyai.com.tw</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'; // ← replace with your Formspree form ID
+
+const opts3 = [
+  { val: 'yes', label: 'Yes — fully in place' },
+  { val: 'partial', label: 'Partially — in progress or informal' },
+  { val: 'no', label: 'No — not yet addressed' }
+];
+const optsYN = [
+  { val: 'yes', label: 'Yes' },
+  { val: 'no', label: 'No' }
+];
+
+const qCfg = {
+  'rg-conn':  optsYN,
+  'rg-s1q1': opts3, 'rg-s1q2': opts3, 'rg-s1q3': opts3,
+  'rg-s2q1': opts3, 'rg-s2q2': optsYN, 'rg-s2q3': opts3,
+  'rg-s3q1': opts3, 'rg-s3q2': opts3, 'rg-s3q3': opts3,
+  'rg-s4q1': opts3, 'rg-s4q2': opts3, 'rg-s4q3': optsYN
+};
+
+const answers = {};
+const TOTAL_STEPS = 6;
+
+function buildRadios() {
+  for (const [id, opts] of Object.entries(qCfg)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    el.innerHTML = '';
+    opts.forEach(o => {
+      const d = document.createElement('div');
+      d.className = 'radio-opt' + (answers[id] === o.val ? ' selected' : '');
+      d.innerHTML = `<div class="radio-dot"></div><span>${o.label}</span>`;
+      d.onclick = () => {
+        answers[id] = o.val;
+        el.querySelectorAll('.radio-opt').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      };
+      el.appendChild(d);
+    });
+  }
+}
+
+function buildProgress(cur) {
+  const p = document.getElementById('prog');
+  p.innerHTML = '';
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const s = document.createElement('div');
+    s.className = 'prog-seg' + (i < cur ? ' done' : i === cur ? ' active' : '');
+    p.appendChild(s);
+  }
+}
+
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('s' + n);
+  if (el) { el.classList.add('active'); buildProgress(n); window.scrollTo(0,0); }
+}
+
+function score(key) {
+  const v = answers[key];
+  if (v === 'yes') return 2;
+  if (v === 'partial') return 1;
+  return 0;
+}
+
+const CHECKS = [
+  { key: 'rg-s1q1', name: 'Threat modelling & security risk assessment', ref: 'CRA Art. 13(1)', sev: 'critical',
+    desc: 'A structured threat model is required to identify and document security risks as part of the product development process.',
+    action: 'Conduct a formal threat assessment (e.g. STRIDE or IEC 62443-3-2 methodology) and document findings. Consider engaging a cybersecurity consultancy to establish a repeatable process.' },
+  { key: 'rg-s1q2', name: 'Security requirements in product design', ref: 'CRA Annex I §1', sev: 'major',
+    desc: 'Security requirements must be explicitly captured and traceable through the product development lifecycle.',
+    action: 'Add a security requirements section to your product specification template. Map each requirement to a CRA Annex I obligation.' },
+  { key: 'rg-s1q3', name: 'Secure development practices', ref: 'CRA Annex I §1(c)', sev: 'major',
+    desc: 'Secure coding standards and code review practices reduce exploitable vulnerabilities in embedded firmware.',
+    action: 'Adopt a secure coding guideline (e.g. CERT C/C++ or MISRA) and integrate security-focused code review into your CI/CD pipeline.' },
+  { key: 'rg-s2q1', name: 'Coordinated vulnerability disclosure (CVD) process', ref: 'CRA Art. 13(6)', sev: 'critical',
+    desc: 'Manufacturers must have a published policy for receiving, triaging, and responding to externally reported vulnerabilities.',
+    action: 'Publish a security contact and a CVD policy. Register with ENISA\'s vulnerability registry when available. Establish a documented SLA for response times.' },
+  { key: 'rg-s2q3', name: 'Software Bill of Materials (SBOM)', ref: 'CRA Annex I §2(1)', sev: 'critical',
+    desc: 'An SBOM is required to identify and track open-source and third-party components for known vulnerability exposure.',
+    action: 'Generate an SBOM using automated tooling (e.g. Syft, Dependency-Track). Include all firmware-level libraries, OS components, and communication stacks. Integrate into your build pipeline.' },
+  { key: 'rg-s3q1', name: 'Authentication for remote access', ref: 'CRA Annex I §1(f)', sev: 'critical',
+    desc: 'Unauthenticated remote access or configuration is a primary attack vector for industrial devices and is explicitly prohibited under CRA.',
+    action: 'Ensure all remote interfaces require credential-based authentication. Disable default credentials at first boot. Consider multi-factor authentication for privileged access.' },
+  { key: 'rg-s3q2', name: 'Encryption of communications in transit', ref: 'CRA Annex I §1(e)', sev: 'major',
+    desc: 'Network communications must protect data confidentiality and integrity. Unencrypted protocols (Modbus/TCP, plain HTTP) do not meet this requirement.',
+    action: 'Migrate network interfaces to TLS 1.2+ or encrypted OPC-UA. Audit existing protocol usage across all network-facing interfaces.' },
+  { key: 'rg-s3q3', name: 'Anomaly detection and access logging', ref: 'CRA Annex I §1(j)', sev: 'major',
+    desc: 'The product must be capable of logging security-relevant events and detecting anomalous behavior — a capability increasingly expected at the embedded level.',
+    action: 'Implement event logging for authentication failures, configuration changes, and unusual traffic patterns. Consider an embedded deep packet inspection (DPI) or intrusion prevention component to enable network-level anomaly detection within the device itself.' },
+  { key: 'rg-s4q1', name: 'Technical security documentation', ref: 'CRA Art. 31, Annex VII', sev: 'major',
+    desc: 'Technical documentation describing the product\'s security architecture is required for conformity assessment and market surveillance.',
+    action: 'Prepare a security architecture document covering: network interfaces, data flows, authentication mechanisms, update process, and known residual risks.' },
+  { key: 'rg-s4q2', name: 'End-user security guidance', ref: 'CRA Annex II §10', sev: 'minor',
+    desc: 'Product documentation must instruct users on secure configuration, including password management, network segmentation, and update procedures.',
+    action: 'Add a "Cybersecurity configuration guide" to your product manual covering default credentials, recommended network segmentation, and firmware update instructions.' },
+];
+
+async function submitAndGenerate() {
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const title = document.getElementById('contact-title').value.trim();
+  const co = document.getElementById('co-name').value.trim() || 'Unnamed company';
+
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid work email address.');
+    return;
+  }
+  if (!name) {
+    alert('Please enter your name.');
+    return;
+  }
+
+  const btn = document.getElementById('gen-btn');
+  const msg = document.getElementById('sending-msg');
+  btn.disabled = true;
+  msg.style.display = 'inline';
+
+  // Calculate scores for submission
+  let total = 0, maxTotal = 0;
+  CHECKS.forEach(c => { maxTotal += 2; total += score(c.key); });
+  const pct = Math.round((total / maxTotal) * 100);
+  const critCount = CHECKS.filter(c => score(c.key) < 2 && c.sev === 'critical').length;
+  const majCount = CHECKS.filter(c => score(c.key) < 2 && c.sev === 'major').length;
+
+  // Send to Formspree
+  try {
+    await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name, email, title, company: co,
+        score: pct + '%',
+        critical_gaps: critCount,
+        major_gaps: majCount,
+        product: document.getElementById('prod-cat').value,
+        _subject: `CRA Assessment — ${co} (${pct}%)`
+      })
+    });
+  } catch(e) {
+    // Silent fail — still show report
+  }
+
+  btn.disabled = false;
+  msg.style.display = 'none';
+  renderReport(name, email, co, pct, total, maxTotal);
+}
+
+function renderReport(contactName, contactEmail, co, pct, total, maxTotal) {
+  const cat = document.getElementById('prod-cat');
+  const catLabel = cat.options[cat.selectedIndex]?.text || 'industrial product';
+  const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  let band = 'critical', bandTitle = 'Significant gaps — immediate action required';
+  if (pct >= 70) { band = 'aligned'; bandTitle = 'Largely aligned — targeted remediation needed'; }
+  else if (pct >= 40) { band = 'partial'; bandTitle = 'Structured compliance programme needed'; }
+
+  const gaps = CHECKS.filter(c => score(c.key) < 2);
+  gaps.sort((a,b) => ({ critical:0, major:1, minor:2 }[a.sev] - { critical:0, major:1, minor:2 }[b.sev]));
+  const critGaps = gaps.filter(g => g.sev === 'critical');
+  const majGaps = gaps.filter(g => g.sev === 'major');
+  const minGaps = gaps.filter(g => g.sev === 'minor');
+
+  let html = `
+    <div id="report-content">
+    <div class="r-brand">
+      <div class="r-brand-left">
+        <div class="r-tag">CRA Gap Assessment Report</div>
+        <div class="r-company">${co}</div>
+        <div class="r-meta">Product: ${catLabel} &nbsp;·&nbsp; ${dateStr} &nbsp;·&nbsp; Prepared for ${contactName}</div>
+      </div>
+      <div class="r-contact">
+        <strong>Wesley AI Inc.</strong><br>
+        <a href="mailto:wesley@wesleyai.com.tw">wesley@wesleyai.com.tw</a><br>
+        wesleyai.com.tw
+      </div>
+    </div>
+
+    <div class="score-band ${band}">
+      <div class="score-num">${pct}%</div>
+      <div>
+        <div class="score-info-title">${bandTitle}</div>
+        <div class="score-info-sub">${gaps.length} gap${gaps.length!==1?'s':''} identified — ${critGaps.length} critical, ${majGaps.length} major, ${minGaps.length} minor</div>
+      </div>
+    </div>
+
+    <div class="section-head">Gap findings</div>`;
+
+  if (gaps.length === 0) {
+    html += `<p style="font-size:14px;color:var(--gray-600);padding:1rem 0;">No significant gaps identified. A formal conformity assessment is still recommended before CE marking.</p>`;
+  }
+
+  gaps.forEach(g => {
+    html += `
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="sev-dot ${g.sev}"></div>
+        <div class="gap-name">${g.name}</div>
+        <div class="sev-badge ${g.sev}">${g.sev}</div>
+      </div>
+      <div class="gap-body">
+        <div class="gap-desc">${g.desc}</div>
+        <div class="gap-action"><strong>Recommended action:</strong> ${g.action}</div>
+        <div class="gap-ref">${g.ref}</div>
+      </div>
+    </div>`;
+  });
+
+  const phases = [
+    { label: 'Immediate (0–3 months)', items: critGaps },
+    { label: 'Short-term (3–6 months)', items: majGaps },
+    { label: 'Ongoing (6–12 months)', items: minGaps }
+  ];
+
+  html += `<div class="section-head">Remediation roadmap</div>`;
+  phases.forEach((ph, i) => {
+    if (!ph.items.length) return;
+    html += `<div class="road-item"><div class="road-num">${i+1}</div><div class="road-text"><strong>${ph.label}</strong><br>${ph.items.map(g=>g.name).join(' · ')}</div></div>`;
+  });
+
+  html += `
+    <div class="cta-card">
+      <p>This assessment identifies gaps that require implementation support across process, tooling, and embedded security capability. Wesley AI Inc. provides structured CRA compliance programmes for Taiwan-based industrial manufacturers — from initial gap analysis through to technical documentation and conformity assessment preparation.</p>
+      <p>We will follow up at <strong class="cta-email">${contactEmail}</strong> to discuss next steps.</p>
+    </div>
+    </div>
+
+    <div class="report-actions">
+      <button class="btn-primary" onclick="exportPDF()">Download PDF report</button>
+      <button class="btn-outline-green" onclick="location.reload()">Start new assessment</button>
+    </div>`;
+
+  document.getElementById('main-form').style.display = 'none';
+  document.getElementById('prog').style.display = 'none';
+  const rpt = document.getElementById('report');
+  rpt.innerHTML = html;
+  rpt.style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const co = document.getElementById('co-name')?.value || '';
+  const margin = 20;
+  const pageW = 210;
+  const usable = pageW - margin * 2;
+  let y = 20;
+
+  const addText = (text, size, weight, color, indent) => {
+    doc.setFontSize(size);
+    doc.setFont('helvetica', weight || 'normal');
+    doc.setTextColor(...(color || [26,26,24]));
+    const lines = doc.splitTextToSize(text, usable - (indent||0));
+    if (y + lines.length * size * 0.4 > 270) { doc.addPage(); y = 20; }
+    doc.text(lines, margin + (indent||0), y);
+    y += lines.length * size * 0.42 + 1;
+    return lines.length;
+  };
+
+  const addLine = (col) => {
+    doc.setDrawColor(...(col || [200,200,200]));
+    doc.line(margin, y, pageW - margin, y);
+    y += 4;
+  };
+
+  // Header
+  doc.setFillColor(29, 158, 117);
+  doc.rect(0, 0, 210, 12, 'F');
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(255,255,255);
+  doc.text('Wesley AI Inc. — CRA Gap Assessment Report', margin, 8);
+  doc.text('wesleyai.com.tw', pageW - margin, 8, { align: 'right' });
+  y = 22;
+
+  addText('EU Cyber Resilience Act — Gap Assessment', 18, 'bold', [26,26,24]);
+  addText(co || 'Assessment Report', 13, 'normal', [95,94,90]);
+  y += 4;
+  addLine();
+
+  // Score
+  const cat = document.getElementById('prod-cat');
+  const catLabel = cat?.options[cat.selectedIndex]?.text || '';
+  const dateStr = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  let total=0, maxTotal=0;
+  CHECKS.forEach(c=>{maxTotal+=2;total+=score(c.key);});
+  const pct = Math.round((total/maxTotal)*100);
+  const gaps = CHECKS.filter(c=>score(c.key)<2);
+  gaps.sort((a,b)=>({critical:0,major:1,minor:2}[a.sev]-{critical:0,major:1,minor:2}[b.sev]));
+
+  addText(`Compliance score: ${pct}%`, 14, 'bold', pct<40?[163,45,45]:pct<70?[133,79,11]:[15,110,86]);
+  addText(`${gaps.length} gaps identified  ·  Product: ${catLabel}  ·  ${dateStr}`, 10, 'normal', [95,94,90]);
+  y += 5;
+
+  // Gaps
+  addText('GAP FINDINGS', 9, 'bold', [95,94,90]);
+  y += 1;
+
+  const sevColor = { critical:[163,45,45], major:[133,79,11], minor:[15,110,86] };
+  gaps.forEach(g => {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFillColor(...(g.sev==='critical'?[252,235,235]:g.sev==='major'?[250,238,218]:[234,243,222]));
+    doc.roundedRect(margin, y-2, usable, 7, 2, 2, 'F');
+    addText(`${g.sev.toUpperCase()}  ${g.name}`, 10, 'bold', sevColor[g.sev]);
+    addText(g.desc, 9, 'normal', [95,94,90], 2);
+    addText('Action: ' + g.action, 9, 'normal', [26,26,24], 2);
+    addText(g.ref, 8, 'normal', [180,178,169], 2);
+    y += 3;
+  });
+
+  // Roadmap
+  if (y > 240) { doc.addPage(); y = 20; }
+  y += 4;
+  addLine();
+  addText('REMEDIATION ROADMAP', 9, 'bold', [95,94,90]);
+  y += 1;
+
+  const phases = [
+    { label:'1. Immediate (0–3 months)', items: gaps.filter(g=>g.sev==='critical') },
+    { label:'2. Short-term (3–6 months)', items: gaps.filter(g=>g.sev==='major') },
+    { label:'3. Ongoing (6–12 months)', items: gaps.filter(g=>g.sev==='minor') }
+  ];
+  phases.forEach(ph => {
+    if (!ph.items.length) return;
+    addText(ph.label, 10, 'bold', [26,26,24]);
+    ph.items.forEach(g => addText('• ' + g.name, 9, 'normal', [95,94,90], 3));
+    y += 2;
+  });
+
+  // CTA
+  if (y > 240) { doc.addPage(); y = 20; }
+  y += 4;
+  doc.setFillColor(225, 245, 238);
+  doc.roundedRect(margin, y-2, usable, 28, 3, 3, 'F');
+  addText('Next steps — Wesley AI Inc.', 11, 'bold', [8,80,65]);
+  addText('Wesley AI provides structured CRA compliance programmes for Taiwan-based industrial manufacturers. Contact us to discuss implementation support, technical documentation preparation, and conformity assessment readiness.', 9, 'normal', [15,110,86], 2);
+  addText('wesley@wesleyai.com.tw  ·  wesleyai.com.tw', 9, 'bold', [15,110,86], 2);
+
+  // Footer
+  const pageCount = doc.getNumberOfPages();
+  for (let i=1;i<=pageCount;i++) {
+    doc.setPage(i);
+    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(180,178,169);
+    doc.text(`Wesley AI Inc. — Confidential  ·  Page ${i} of ${pageCount}`, margin, 290);
+  }
+
+  const filename = `CRA-Assessment-${(co||'Report').replace(/[^a-zA-Z0-9]/g,'-')}-${new Date().toISOString().slice(0,10)}.pdf`;
+  doc.save(filename);
+}
+
+buildRadios();
+buildProgress(0);
+</script>
+</body>
+</html>
