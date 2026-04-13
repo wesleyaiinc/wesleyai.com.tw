@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Hero: React.FC = () => {
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
@@ -28,6 +27,15 @@ const Hero: React.FC = () => {
             <a href="#team" className="w-full sm:w-auto px-8 py-4 glass text-white rounded-xl font-bold transition-all hover:bg-white/5 text-center">
               About Wesley
             </a>
+            <a
+              href="/cra-assessment.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold transition-all hover:scale-105 active:scale-95 text-center border border-green-500/40 hover:border-green-400 hover:bg-green-500/10"
+              style={{ color: '#9FE1CB' }}
+            >
+              Free CRA Self-Assessment →
+            </a>
           </div>
         </div>
       </div>
@@ -37,5 +45,4 @@ const Hero: React.FC = () => {
     </section>
   );
 };
-
 export default Hero;
