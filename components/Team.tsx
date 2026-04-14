@@ -6,7 +6,7 @@ const members: TeamMember[] = [
     name: 'Wesley Lin (林靖為)',
     role: 'Founder & Principal Consultant',
     bio: "Business development professional with deep roots in Taiwan's energy and industrial automation ecosystem, with experience at Delta Electronics (AIoT, energy management, factory automation), ABB, and Schneider Electric. Focused on embedding AI into energy and automation systems — from edge intelligence to operational optimization — while bridging Taiwan manufacturers with EU regulatory frameworks, particularly the Cyber Resilience Act, enabling their transition into secure, intelligent, and globally compliant solution providers.",
-    avatar: '/wesley.jpg'
+    avatar: '/Wesley.png'
   }
 ];
 
@@ -35,7 +35,7 @@ const Team: React.FC = () => {
               <p className="text-gray-400 text-base leading-relaxed font-light">{m.bio}</p>
               
               <div className="mt-8 pt-6 border-t border-white/5 flex justify-center space-x-4 opacity-40 group-hover:opacity-100 transition-opacity">
-                <a href="https://www.linkedin.com/in/wesleylin-tw" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all">
+                <a href="https://www.linkedin.com/in/wesley-lin-18237843" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-blue-500 hover:text-white cursor-pointer transition-all">
                   <span className="text-[10px] font-bold">LI</span>
                 </a>
               </div>

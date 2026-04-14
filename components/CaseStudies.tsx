@@ -4,7 +4,7 @@ import { CaseStudy } from '../types';
 const cases: CaseStudy[] = [
   {
     id: '1',
-    client: 'Delta Electronics',
+    client: 'Global Tier-1 Energy Infrastructure Manufacturer',
     title: 'CRA Gap Analysis for EV Charger Product Line',
     impact: 'Identified compliance gaps across firmware, vulnerability management, and technical documentation — mapped to a prioritized 18-month remediation roadmap.',
     image: 'https://picsum.photos/seed/ev1/800/600'

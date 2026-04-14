@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               Helping Taiwan manufacturers navigate EU compliance — CRA, AI Act, and beyond. Based in Taoyuan, Taiwan. Operating globally.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.linkedin.com/in/wesleylin-tw" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all">
+              <a href="https://www.linkedin.com/in/wesley-lin-18237843" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all">
                 <span className="text-xs">LI</span>
               </a>
             </div>
@@ -35,8 +35,8 @@ const Footer: React.FC = () => {
             <h4 className="text-white font-bold mb-6">Contact</h4>
             <ul className="space-y-4 text-gray-500">
               <li>
-                <a href="mailto:info@wesleyai.com.tw" className="hover:text-blue-400 transition-colors">
-                  info@wesleyai.com.tw
+                <a href="mailto:wesley@wesleyai.com.tw" className="hover:text-blue-400 transition-colors">
+                  wesley@wesleyai.com.tw
                 </a>
               </li>
               <li className="text-gray-600 text-sm">Taoyuan, Taiwan</li>
