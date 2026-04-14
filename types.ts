@@ -4,6 +4,7 @@ export interface Service {
   title: string;
   description: string;
   icon: string;
+  link: string | null;
 }
 
 export interface CaseStudy {

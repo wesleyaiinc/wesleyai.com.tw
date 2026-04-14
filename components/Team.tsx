@@ -5,7 +5,7 @@ const members: TeamMember[] = [
   {
     name: 'Wesley Lin (林靖為)',
     role: 'Founder & Principal Consultant',
-    bio: "Business development professional with deep roots in Taiwan's energy and industrial automation ecosystem, with experience at Delta Electronics (AIoT, energy management, factory automation), ABB, and Schneider Electric. Focused on embedding AI into energy and automation systems — from edge intelligence to operational optimization — while bridging Taiwan manufacturers with EU regulatory frameworks, particularly the Cyber Resilience Act, enabling their transition into secure, intelligent, and globally compliant solution providers.",
+    bio: "Business development leader with 20+ years in Taiwan's energy and industrial automation ecosystem, with leadership experience at Delta Electronics (AIoT, energy management, factory automation), ABB, Schneider Electric and IBM. Specialized in integrating AI into energy and automation systems—from edge intelligence to operational optimization—while enabling Taiwan manufacturers to meet EU regulatory requirements, including the Cyber Resilience Act. Driving transformation toward secure, intelligent, and globally competitive solutions.",
     avatar: '/Wesley.png'
   }
 ];

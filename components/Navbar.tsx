@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const Navbar: React.FC = () => {
@@ -25,12 +24,14 @@ const Navbar: React.FC = () => {
           <a href="#playground" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">AI Demo</a>
           <a href="#projects" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Work</a>
           <a href="#team" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">About</a>
-          <button className="bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95">
+          <a
+            href="mailto:wesley@wesleyai.com.tw"
+            className="bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition-all hover:scale-105 active:scale-95"
+          >
             Contact Us
-          </button>
+          </a>
         </div>
 
-        {/* Mobile menu button */}
         <button className="md:hidden text-white">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
         </button>

@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-4 text-gray-500">
               <li><a href="#services" className="hover:text-blue-400 transition-colors">AI for Energy & Automation</a></li>
               <li><a href="#services" className="hover:text-blue-400 transition-colors">CRA Compliance</a></li>
-              <li><a href="#services" className="hover:text-blue-400 transition-colors">Schaltbau Contactors</a></li>
+              <li><a href="https://schaltbau.com/en/products/contactors/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">Schaltbau Contactors</a></li>
             </ul>
           </div>
           

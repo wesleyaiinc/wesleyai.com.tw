@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
-            Wesley AI Inc. helps Taiwan industrial companies comply with the EU Cyber Resilience Act, integrate AI into energy & automation systems, and expand into European markets with confidence.
+            Wesley AI Inc. helps Taiwan industrial companies comply with the EU Cyber Resilience Act, integrate AI into energy & automation systems, and expand into global markets with confidence.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
