@@ -8,7 +8,7 @@ export const generateProfessionalAnalysis = async (input: string) => {
   const ai = getAIClient();
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash",
+      model: "gemini-1.5-flash-latest",
       contents: `You are a senior EU regulatory compliance advisor specializing in the Cyber Resilience Act and industrial AI. Analyze the following business question and provide a concise, professional response focused on practical compliance steps and business implications for Taiwan manufacturers: "${input}"`,
       config: {
         systemInstruction: "You are a senior compliance and business development advisor with deep expertise in EU cybersecurity regulations (CRA, NIS2) and industrial AI applications for Taiwan manufacturers. Be specific, practical, and concise.",
