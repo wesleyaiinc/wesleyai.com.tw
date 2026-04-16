@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Solutions for Energy & Automation — Wesley AI Inc.</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --blue: #3b82f6;
+    --blue-dark: #1d4ed8;
+    --blue-light: #eff6ff;
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --gray-100: #f8fafc;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --text: #0f172a;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --radius: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: #0a0f1e;
+    color: #e2e8f0;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,15,30,0.85); backdrop-filter: blur(12px);
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-mark {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px; color: #fff;
+  }
+  .nav-name { font-weight: 700; font-size: 15px; color: #fff; letter-spacing: 0.02em; }
+  .nav-name span { color: #60a5fa; }
+  .nav-back {
+    font-size: 13px; color: var(--gray-400); text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.15s;
+  }
+  .nav-back:hover { color: #fff; }
+
+  /* HERO */
+  .hero {
+    max-width: 860px; margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+    padding: 4px 14px; border-radius: 999px; margin-bottom: 1.5rem;
+    font-size: 11px; font-family: var(--mono); color: #60a5fa;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .hero-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #60a5fa;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 500; line-height: 1.2; margin-bottom: 1.25rem;
+    color: #fff;
+  }
+  .hero h1 span { color: #60a5fa; }
+  .hero p {
+    font-size: 16px; color: var(--gray-400);
+    max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; background: var(--blue); color: #fff;
+    border-radius: var(--radius); font-weight: 500; font-size: 15px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .hero-cta:hover { background: var(--blue-dark); }
+
+  /* SECTION */
+  .section { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
+  .section-tag {
+    font-family: var(--mono); font-size: 11px; color: #60a5fa;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 500;
+    color: #fff; margin-bottom: 0.75rem;
+  }
+  .section-sub { font-size: 15px; color: var(--gray-400); margin-bottom: 2.5rem; max-width: 600px; line-height: 1.7; }
+
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 0 2rem; }
+
+  /* CAPABILITY CARDS */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-3px); }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(59,130,246,0.1); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .card-icon svg { width: 22px; height: 22px; stroke: #60a5fa; fill: none; }
+  .card-title { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+  .card-desc { font-size: 13px; color: var(--gray-400); line-height: 1.65; }
+  .card-points { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .card-point {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 12px; color: #94a3b8;
+  }
+  .card-point::before {
+    content: '→'; color: #60a5fa; font-size: 11px; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ENQUIRY FORM */
+  .form-wrap {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 2.5rem;
+    max-width: 640px; margin: 0 auto;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-group { margin-bottom: 0; }
+  .form-label {
+    display: block; font-family: var(--mono); font-size: 11px;
+    color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.07em;
+    margin-bottom: 8px;
+  }
+  input, select, textarea {
+    width: 100%; padding: 12px 14px; font-family: var(--sans); font-size: 14px;
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; color: #e2e8f0;
+    transition: border-color 0.15s; -webkit-appearance: none;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.18); }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); }
+  select { cursor: pointer; }
+  textarea { resize: none; height: 120px; }
+  .btn-submit {
+    width: 100%; padding: 13px; margin-top: 16px;
+    font-family: var(--sans); font-size: 15px; font-weight: 500;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #fff; border: none; border-radius: 10px; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .form-note { font-size: 12px; color: var(--gray-400); text-align: center; margin-top: 12px; }
+  .success-box {
+    text-align: center; padding: 2rem 0;
+  }
+  .success-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(29,158,117,0.15); display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem;
+  }
+  .success-icon svg { width: 26px; height: 26px; stroke: #1D9E75; fill: none; }
+  .success-title { font-size: 18px; font-weight: 500; color: #fff; margin-bottom: 8px; }
+  .success-sub { font-size: 14px; color: var(--gray-400); }
+  .reset-btn {
+    margin-top: 1.5rem; padding: 8px 20px; font-family: var(--sans); font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+    background: transparent; color: var(--gray-400); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 1.5rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+    font-size: 13px; color: var(--gray-400);
+  }
+  .footer a { color: #60a5fa; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    <div class="nav-mark">W</div>
+    <span class="nav-name">WESLEY AI <span>Inc</span></span>
+  </a>
+  <a href="/" class="nav-back">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    Back to main site
+  </a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag"><div class="hero-dot"></div>AI for Industry</div>
+  <h1>AI Solutions for <span>Energy & Automation</span></h1>
+  <p>Helping Taiwan manufacturers deploy AI across energy management and factory automation — reducing costs, improving uptime, and meeting EU sustainability requirements.</p>
+  <a href="#enquiry" class="hero-cta">
+    Discuss your project
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+    </svg>
+  </a>
+</div>
+
+<hr class="divider" />
+
+<!-- CAPABILITIES -->
+<div class="section">
+  <div class="section-tag">What we do</div>
+  <div class="section-title">Three core application areas</div>
+  <div class="section-sub">Practical AI deployment focused on measurable outcomes — not proof-of-concept projects that never scale.</div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+      </div>
+      <div class="card-title">AI-driven energy monitoring</div>
+      <div class="card-desc">Real-time visibility and predictive control across your facility's energy consumption.</div>
+      <div class="card-points">
+        <div class="card-point">Predictive load forecasting — anticipate demand spikes before they happen</div>
+        <div class="card-point">Peak demand management — reduce grid charges and penalties</div>
+        <div class="card-point">Carbon tracking — automated reporting aligned with EU sustainability directives</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="card-title">Predictive maintenance</div>
+      <div class="card-desc">Move from scheduled maintenance to condition-based intervention — before failures occur.</div>
+      <div class="card-points">
+        <div class="card-point">Vibration, temperature and current signature analysis on critical equipment</div>
+        <div class="card-point">Early anomaly detection — days to weeks before failure</div>
+        <div class="card-point">Reduced unplanned downtime and maintenance costs</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+      </div>
+      <div class="card-title">ESS & EV charger AI optimisation</div>
+      <div class="card-desc">AI-layer integration for energy storage systems and EV charging infrastructure.</div>
+      <div class="card-points">
+        <div class="card-point">ESS charge/discharge optimisation based on tariff and demand forecasts</div>
+        <div class="card-point">Smart EV charging scheduling — balance grid load and user demand</div>
+        <div class="card-point">Remote monitoring and anomaly alerting for distributed assets</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- ENQUIRY FORM -->
+<div class="section" id="enquiry">
+  <div class="section-tag">Get in touch</div>
+  <div class="section-title">Tell us about your project</div>
+  <div class="section-sub">Wesley responds personally to every enquiry — usually within 24 hours on business days.</div>
+
+  <div class="form-wrap">
+    <div id="form-content">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Your name</label>
+          <input type="text" id="f-name" placeholder="Jane Chen" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Work email</label>
+          <input type="email" id="f-email" placeholder="you@company.com" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Company & industry</label>
+        <input type="text" id="f-company" placeholder="e.g. ABC Manufacturing — EV chargers" />
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Area of interest</label>
+        <select id="f-interest">
+          <option value="">Select...</option>
+          <option>AI-driven energy monitoring</option>
+          <option>Predictive maintenance</option>
+          <option>ESS / EV charger AI optimisation</option>
+          <option>Multiple areas — need scoping</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell us about your situation</label>
+        <textarea id="f-message" placeholder="e.g. We operate 3 factories in Taoyuan and want to reduce peak demand charges. Our main equipment is..."></textarea>
+      </div>
+      <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send enquiry</button>
+      <p id="err-msg" style="color:#f87171;font-size:12px;text-align:center;margin-top:10px;display:none;">Something went wrong. Please email <a href="mailto:wesley@wesleyai.com.tw" style="color:#60a5fa;">wesley@wesleyai.com.tw</a> directly.</p>
+      <p class="form-note">Your information is shared only with Wesley AI Inc. and will not be passed to third parties.</p>
+    </div>
+
+    <div id="success-content" class="success-box" style="display:none;">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="success-title">Enquiry received</div>
+      <div class="success-sub">Wesley will respond to <strong id="confirm-email"></strong> within 24 hours.</div>
+      <button class="reset-btn" onclick="resetForm()">Send another enquiry</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>© 2025 Wesley AI Inc. — Taoyuan, Taiwan</span>
+  <a href="mailto:wesley@wesleyai.com.tw">wesley@wesleyai.com.tw</a>
+</footer>
+
+<script>
+async function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const company = document.getElementById('f-company').value.trim();
+  const interest = document.getElementById('f-interest').value;
+  const message = document.getElementById('f-message').value.trim();
+  const err = document.getElementById('err-msg');
+
+  if (!name || !email || !message) { alert('Please fill in name, email and project details.'); return; }
+  if (!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  err.style.display = 'none';
+
+  try {
+    const res = await fetch('https://formspree.io/f/mbdqjrwj', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        name, email, company, interest, message,
+        _subject: `AI Energy Enquiry — ${name} (${company || 'no company'})`
+      })
+    });
+    if (res.ok) {
+      document.getElementById('confirm-email').textContent = email;
+      document.getElementById('form-content').style.display = 'none';
+      document.getElementById('success-content').style.display = 'block';
+    } else {
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Send enquiry';
+    }
+  } catch {
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Send enquiry';
+  }
+}
+
+function resetForm() {
+  ['f-name','f-email','f-company','f-message'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-interest').value = '';
+  document.getElementById('form-content').style.display = 'block';
+  document.getElementById('success-content').style.display = 'none';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'Send enquiry';
+}
+</script>
+</body>
+</html>

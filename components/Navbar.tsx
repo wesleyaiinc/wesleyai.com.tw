@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
         {/* Desktop menu */}
         <div className="hidden md:flex items-center space-x-8">
           <a href="#services" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Services</a>
-          <a href="#contact-form" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">AI Demo</a>
+          <a href="#contact-form" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">CRA Enquiry</a>
           <a href="#projects" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Work</a>
           <a href="#articles" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">Articles</a>
           <a href="#team" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">About</a>
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Mobile menu dropdown */}
+      {/* Mobile dropdown */}
       {menuOpen && (
         <div className="md:hidden glass border-t border-white/10 px-6 py-4 flex flex-col space-y-4">
           <a href="#services" onClick={closeMenu} className="text-gray-300 hover:text-white transition-colors text-sm font-medium py-2">Services</a>
