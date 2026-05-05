@@ -1,20 +1,35 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Wesley AI Inc. — Company Website
 
-# Run and deploy your AI Studio app
+Corporate website for **Wesley AI Inc.** (衛斯理股份有限公司), a boutique consulting firm specializing in EU Cyber Resilience Act (CRA) compliance and OT cybersecurity advisory for Taiwan manufacturers.
 
-This contains everything you need to run your app locally.
+🌐 **Live site → [wesleyai.com.tw](https://wesleyai.com.tw)**
 
-View your app in AI Studio: https://ai.studio/apps/temp/1
+---
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+| Layer | Technology |
+|-------|------------|
+| Framework | React 18 + TypeScript |
+| Build tool | Vite |
+| Hosting | GitHub Pages |
+| CI/CD | GitHub Actions |
+| DNS / CDN | Cloudflare |
 
+## Features
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- CRA compliance self-assessment tool (gap analysis)
+- Mobile-responsive layout
+- Contact enquiry form (Formspree)
+- Automated deployment via GitHub Actions on every push to `main`
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+*Built by Wesley Lin · [Wesley AI Inc.](https://wesleyai.com.tw)*
